@@ -1,17 +1,26 @@
 import 'package:get/get.dart';
 import 'package:weather_app/app/data/weather.dart';
+import 'package:weather_app/app/modules/home/controllers/weatherdata.dart';
 
 class HomeController extends GetxController {
   // Create an instance of WeatherModel for fetching weather data.
   WeatherModel weatherModel = WeatherModel();
 
   // Observables to store weather information.
-  final RxInt temprature = 0.obs;
-  final RxInt humidity = 0.obs;
-  final RxString weathericon = ''.obs;
-  final RxString weathermessage = ''.obs;
-  final RxDouble windspeed = 0.0.obs;
-  final RxString cityname = ''.obs;
+  // final RxInt temprature = 0.obs;
+  // final RxInt humidity = 0.obs;
+  // final RxString weathericon = ''.obs;
+  // final RxString weathermessage = ''.obs;
+  // final RxDouble windspeed = 0.0.obs;
+  // final RxString cityname = ''.obs;
+  Rx<WeatherData> weatherdataclass = WeatherData(
+          temprature: 0,
+          humidity: 0,
+          weathericon: '',
+          weathermessage: '',
+          windspeed: 0.0,
+          cityname: '')
+      .obs;
 
   @override
   void onInit() async {
@@ -19,12 +28,14 @@ class HomeController extends GetxController {
     final weatherdata = await weatherModel.getCityWeather('kochi');
 
     // Populate observables with weather data.
-    temprature.value = weatherdata.main.temp.toInt();
-    humidity.value = weatherdata.main.humidity;
-    weathericon.value = weatherModel.getWeatherIcon(weatherdata.weather[0].id);
-    weathermessage.value = weatherModel.getMessage(temprature.value);
-    windspeed.value = weatherdata.wind.speed;
-    cityname.value = weatherdata.name;
+    weatherdataclass.value = WeatherData(
+        temprature: weatherdata.main.temp.toInt(),
+        humidity: weatherdata.main.humidity,
+        weathericon: weatherModel.getWeatherIcon(weatherdata.weather[0].id),
+        weathermessage:
+            weatherModel.getMessage(weatherdataclass.value.temprature),
+        windspeed: weatherdata.wind.speed,
+        cityname: weatherdata.name);
 
     super.onInit();
   }
@@ -46,11 +57,13 @@ class HomeController extends GetxController {
     var weatherdata = await weatherModel.getCityWeather(searchcityname);
 
     // Update observables with the new weather data.
-    temprature.value = weatherdata.main.temp.toInt();
-    humidity.value = weatherdata.main.humidity;
-    weathericon.value = weatherModel.getWeatherIcon(weatherdata.weather[0].id);
-    weathermessage.value = weatherModel.getMessage(temprature.value);
-    windspeed.value = weatherdata.wind.speed;
-    cityname.value = weatherdata.name;
+    weatherdataclass.value = WeatherData(
+        temprature: weatherdata.main.temp.toInt(),
+        humidity: weatherdata.main.humidity,
+        weathericon: weatherModel.getWeatherIcon(weatherdata.weather[0].id),
+        weathermessage:
+            weatherModel.getMessage(weatherdataclass.value.temprature),
+        windspeed: weatherdata.wind.speed,
+        cityname: weatherdata.name);
   }
 }

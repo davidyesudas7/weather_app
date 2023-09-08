@@ -14,7 +14,7 @@ class HomeView extends GetView<HomeController> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage('lib/images/city_background.jpg'),
+            image: const AssetImage('assets/images/city_background.jpg'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
                 Colors.white.withOpacity(0.8), BlendMode.dstATop),
@@ -44,11 +44,11 @@ class HomeView extends GetView<HomeController> {
                       () => Row(
                         children: <Widget>[
                           Text(
-                            '${controller.temprature}°',
+                            '${controller.weatherdataclass.value.temprature}°',
                             style: kTempTextStyle,
                           ),
                           Text(
-                            controller.weathericon.string,
+                            controller.weatherdataclass.value.weathericon,
                             style: kConditionTextStyle,
                           ),
                         ],
@@ -59,11 +59,13 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       WeatherEventCard(
                         weatherevent: 'Humidity',
-                        eventdata: '${controller.humidity.string}%',
+                        eventdata:
+                            '${controller.weatherdataclass.value.humidity}%',
                       ),
                       WeatherEventCard(
                         weatherevent: 'Wind Speed',
-                        eventdata: '${controller.windspeed.string} m/s',
+                        eventdata:
+                            '${controller.weatherdataclass.value.windspeed} m/s',
                       ),
                     ],
                   ),
@@ -72,7 +74,7 @@ class HomeView extends GetView<HomeController> {
                     padding: const EdgeInsets.only(right: 15.0),
                     child: Obx(
                       () => Text(
-                        '${controller.weathermessage} in ${controller.cityname}',
+                        '${controller.weatherdataclass.value.weathermessage} in ${controller.weatherdataclass.value.cityname}',
                         textAlign: TextAlign.right,
                         style: kMessageTextStyle,
                       ),
